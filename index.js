@@ -4,8 +4,7 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 const dbConnect = require("./utils/dbConnect");
-const toolsRoutes = require("./routes/v1/tools.route.js");
-const viewCount = require("./middleware/viewCount");
+const usersRoute = require("./routes/v1/users.route.js");
 const errorHandler = require("./middleware/errorHandler");
 
 
@@ -16,14 +15,12 @@ app.set("view engine", "ej");
 
 
 dbConnect();
-app.use('/api/v1/tools', toolsRoutes);
+
+app.use('/api/v1', usersRoute);
 
 
 app.get("/", (req, res) => {
-  // res.sendFile(__dirname + '/public/test.html') 
-  res.render("home.ejs",{
-    id:2
-  })
+  res.render("home.ejs")
 });
 
 app.all('*', (req, res) => {

@@ -1,21 +1,11 @@
 const express = require("express");
-const toolsController = require("../../controllers/tools.controller");
-const limiter = require("../../middleware/limiter");
-const viewCount = require("../../middleware/viewCount");
 const router = express.Router();
+const userController = require("../../controllers/user.controller");
 
-// router.get('/', (req, res)=>{
-//     res.send("tools found")
-// });
-// router.post('/', (req, res)=>{
-//     console.log('tools added');
-// });
-
-router
-  .route("/")
-  /**
-   * @api {get} /tools All tools
-   * @apiDescription Get all the tools
+router.route("/GET/user/random")
+    /**
+   * @api {get} /random user
+   * @apiDescription Get random user
    * @apiPermission admin
    *
    * @apiHeader {String} Authorization   User's access token
@@ -27,12 +17,14 @@ router
    *
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admins can access the data
-   */
-  .get(toolsController.getAllTools)
+   */    
+.get(userController.getRandomUser);
+router.route("/GET/user/all").get(userController.allUser);
 
-  /**
-   * @api {post} /tools save a tool
-   * @apiDescription Get all the tools
+router.route("/POST/user/save")
+    /**
+   * @api {post} /save user
+   * @apiDescription save user
    * @apiPermission admin
    *
    * @apiHeader {String} Authorization   User's access token
@@ -44,13 +36,11 @@ router
    *
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admins can access the data
-   */
-  .post(toolsController.postAllTools);
+   */ 
+.post(userController.saveUser);
 
-router
-  .route("/:id")
-  .get(viewCount, limiter, toolsController.getToolDetail)
-  .patch(toolsController.updateTool)
-  .delete(toolsController.deleteTool)
+router.route("/PATCH/user/update/:id").patch(userController.updateUser);
+router.route("/PATCH/user/bulk-update").patch(userController.updateMultipleUser);
+router.route("/DELETE/user/delete/:id").delete(userController.deleteUser);
 
 module.exports = router;
