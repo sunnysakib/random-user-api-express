@@ -20,11 +20,17 @@ app.use('/api/v1', usersRoute);
 
 
 app.get("/", (req, res) => {
-  res.render("home.ejs")
+  res.status(200).send({
+    success: true,
+    message: "Success to enter user API",
+  })
 });
 
 app.all('*', (req, res) => {
-  res.send('No route found');
+  res.status(401).send({
+    success: false,
+    message: "route not found"
+  })
 })
 
 app.use(errorHandler)
